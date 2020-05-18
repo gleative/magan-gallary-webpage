@@ -3,12 +3,17 @@ import styled from 'styled-components';
 import { primaryColor, primaryBackgroundColor } from '../style/colors';
 import { Container } from '../style/main';
 
-export const Menu = () => {
+export const Menu: React.FC = () => {
   const [isOpen, setIsOpen] = React.useState(false);
 
-  function toggleOpen() {
-    setIsOpen(!isOpen);
-    console.log('OPEN value is now: ', isOpen);
+  React.useEffect(() => {
+    console.log('Hamburger clicked', isOpen);
+    lockScroll();
+  });
+
+  function lockScroll() {
+    if (isOpen) document.body.style.overflow = 'hidden';
+    else document.body.style.overflow = 'visible';
   }
 
   return (
@@ -18,7 +23,7 @@ export const Menu = () => {
           {/* Mobile nav */}
           <MobileNavContainer>
             <MobileNavHeader>
-              <HamburgerContainer className={isOpen ? 'open' : ''} onClick={toggleOpen}>
+              <HamburgerContainer onClick={() => setIsOpen((val) => !val)} className={isOpen ? 'open' : ''}>
                 <Line />
                 <Line />
                 <Line />
@@ -49,7 +54,7 @@ export const Menu = () => {
       <MobileNavDropDown className={isOpen ? 'open' : ''}>
         <NavList className={isOpen ? 'open' : ''}>
           <NavItem>
-            <NavLink>About me</NavLink>
+            <NavLink>Bio</NavLink>
           </NavItem>
           <NavItem>
             <NavLink>Instagram</NavLink>
@@ -67,6 +72,9 @@ const Nav = styled.nav`
   color: ${primaryColor};
   display: flex;
   align-items: center;
+  position: sticky;
+  position: -webkit-sticky;
+  top: 0;
 
   -webkit-transition: 0.5s ease-in-out;
   -moz-transition: 0.5s ease-in-out;
@@ -89,8 +97,8 @@ const MobileNavHeader = styled.div`
 const MobileNavContainer = styled.div``;
 
 const MobileNavDropDown = styled.ul`
-  background-color: ${primaryColor};
-  color: ${primaryBackgroundColor};
+  background-color: ${primaryBackgroundColor};
+  color: ${primaryColor};
   /* opacity: 98%; */
   height: 0;
   position: absolute; /* We have this so content does not go below drop down */
