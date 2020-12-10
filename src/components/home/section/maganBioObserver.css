@@ -1,0 +1,4 @@
+.seen {
+  transform: translateX(0);
+  transition: ease 2s transform;
+}

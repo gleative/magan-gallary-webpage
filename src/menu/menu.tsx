@@ -2,8 +2,14 @@ import React from 'react';
 import styled from 'styled-components';
 import { primaryColor, primaryBackgroundColor } from '../style/colors';
 import { Container } from '../style/main';
+import { Link } from 'react-router-dom';
+import { HashLink } from 'react-router-hash-link'; // ! Enables link to id's
 
-export const Menu: React.FC = () => {
+interface Props {
+  changeBackground?: boolean;
+}
+
+export const Menu: React.FC<Props> = () => {
   const [isOpen, setIsOpen] = React.useState(false);
 
   React.useEffect(() => {
@@ -16,48 +22,68 @@ export const Menu: React.FC = () => {
     else document.body.style.overflow = 'visible';
   }
 
+  function toggleNavMenu() {
+    setIsOpen((val) => !val);
+  }
+
   return (
     <>
-      <Nav>
+      <Nav changeBackground={isOpen}>
         <Container>
           {/* Mobile nav */}
           <MobileNavContainer>
             <MobileNavHeader>
-              <HamburgerContainer onClick={() => setIsOpen((val) => !val)} className={isOpen ? 'open' : ''}>
-                <Line />
-                <Line />
-                <Line />
+              {/* () => setIsOpen((val) => !val) */}
+              <HamburgerContainer onClick={toggleNavMenu} className={isOpen ? 'open' : ''}>
+                <Line changeBackground={isOpen} />
+                <Line changeBackground={isOpen} />
+                <Line changeBackground={isOpen} />
               </HamburgerContainer>
 
               <LogoUl>
                 <NavItem>
-                  <LogoLink>MG</LogoLink>
+                  <Link
+                    to="/"
+                    style={{ textDecoration: 'none' }}
+                    // ? If hamburger menu is open, and user clicks MG (home), close the menu
+                    onClick={() => {
+                      if (isOpen) setIsOpen((val) => !val);
+                    }}
+                  >
+                    <LogoLink changeBackground={isOpen}>MG</LogoLink>
+                  </Link>
                 </NavItem>
               </LogoUl>
 
               <BookMeContainer>
-                <BookMe>Book</BookMe>
+                {/* <Link to="/book-me" style={{ textDecoration: 'none' }}> */}
+                <BookMe href="mailto:magan.gallery@hotmail.com" changeBackground={isOpen}>
+                  Book
+                </BookMe>
+                {/* </Link> */}
               </BookMeContainer>
             </MobileNavHeader>
           </MobileNavContainer>
-
-          {/* Desktop */}
-          {/* <NavList>
-          <NavItem>
-            <NavLink>About me</NavLink>
-          </NavItem>
-          <NavItem>Book me</NavItem>
-        </NavList> */}
         </Container>
       </Nav>
 
-      <MobileNavDropDown className={isOpen ? 'open' : ''}>
+      {/* changeBackground is from Props interface, that we must add when we create the component */}
+      <MobileNavDropDown className={isOpen ? 'open' : ''} changeBackground={isOpen}>
         <NavList className={isOpen ? 'open' : ''}>
           <NavItem>
-            <NavLink>Bio</NavLink>
+            <HashLink smooth to="#bio" style={{ textDecoration: 'none' }} onClick={toggleNavMenu}>
+              <NavLink changeBackground={isOpen}>Bio</NavLink>
+            </HashLink>
           </NavItem>
           <NavItem>
-            <NavLink>Instagram</NavLink>
+            <NavLink href="https://tv.nrk.no/sok?q=Magan%20Gallery" target="_blank" changeBackground={isOpen}>
+              NRK
+            </NavLink>
+          </NavItem>
+          <NavItem>
+            <NavLink href="https://www.instagram.com/magangallery/" target="_blank" changeBackground={isOpen}>
+              Instagram
+            </NavLink>
           </NavItem>
         </NavList>
       </MobileNavDropDown>
@@ -66,15 +92,13 @@ export const Menu: React.FC = () => {
 };
 
 const Nav = styled.nav`
-  /* padding: 1em 0; */
   height: 10vh;
-  /* border: 2px solid cyan; */
-  color: ${primaryColor};
+  background-color: ${(p: Props) => (p.changeBackground ? primaryBackgroundColor : primaryColor)};
+  color: ${(p: Props) => (p.changeBackground ? primaryColor : primaryBackgroundColor)};
   display: flex;
   align-items: center;
-  position: sticky;
-  position: -webkit-sticky;
-  top: 0;
+
+  border-bottom: 2px solid ${primaryColor};
 
   -webkit-transition: 0.5s ease-in-out;
   -moz-transition: 0.5s ease-in-out;
@@ -97,9 +121,8 @@ const MobileNavHeader = styled.div`
 const MobileNavContainer = styled.div``;
 
 const MobileNavDropDown = styled.ul`
-  background-color: ${primaryBackgroundColor};
-  color: ${primaryColor};
-  /* opacity: 98%; */
+  background-color: ${(p: Props) => (p.changeBackground ? primaryBackgroundColor : primaryColor)};
+  color: ${primaryBackgroundColor};
   height: 0;
   position: absolute; /* We have this so content does not go below drop down */
   width: 100%;
@@ -117,7 +140,7 @@ const MobileNavDropDown = styled.ul`
 const Line = styled.span`
   padding: 0.1em 0.75em;
   margin: 0.12em 0;
-  background-color: ${primaryColor};
+  background-color: ${(p: Props) => (p.changeBackground ? primaryColor : primaryBackgroundColor)};
   width: 5%;
   position: relative;
 
@@ -168,11 +191,17 @@ const LogoUl = styled.ul`
 `;
 
 const LogoLink = styled.a`
-  color: ${primaryColor};
+  /* ! TODO: Ha MG synelig.... */
+  color: ${(p: Props) => (p.changeBackground ? primaryColor : primaryBackgroundColor)};
+  /* visibility: ${(p: Props) => (p.changeBackground ? 'visible' : 'gone')}; */
+  /* color: ${primaryColor}; */
+
   cursor: pointer;
-  font-weight: 800;
+  font-weight: normal;
   font-size: 32px;
   width: 30%;
+  text-decoration: none;
+  letter-spacing: 0.085em;
 `;
 
 const NavList = styled.ul`
@@ -199,6 +228,8 @@ const NavItem = styled.li``;
 
 const NavLink = styled.a`
   text-transform: uppercase;
+  text-decoration: none;
+  color: ${(p: Props) => (p.changeBackground ? primaryColor : primaryBackgroundColor)};
 `;
 
 const BookMeContainer = styled.div`
@@ -208,9 +239,20 @@ const BookMeContainer = styled.div`
 `;
 
 const BookMe = styled.a`
-  background-color: ${primaryColor};
-  padding: 0.5em 0.5em;
-  border-radius: 100px;
-  text-transform: uppercase;
+  background-color: ${(p: Props) => (p.changeBackground ? primaryColor : primaryBackgroundColor)};
+  padding: 1em 2em;
+  color: ${(p: Props) => (p.changeBackground ? primaryBackgroundColor : primaryColor)};
+  border-radius: 28px;
   cursor: pointer;
+  transition: 0.2s ease-in-out;
+  text-decoration: none;
+
+  &:hover {
+    background: white;
+    color: black;
+  }
+
+  @media (max-width: 700px) {
+    padding: 0.5em 1.5em;
+  }
 `;
