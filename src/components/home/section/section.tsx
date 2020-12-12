@@ -102,7 +102,7 @@ const ImageContainer = styled.div`
 
 // ? SeenProps - contains structure of props it can receive
 const Image = styled.img<SeenProps>`
-  max-width: 95%;
+  max-width: 90%;
 
   @media (max-width: 1331px) {
     max-width: 70%;
