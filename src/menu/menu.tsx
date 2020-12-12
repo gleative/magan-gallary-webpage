@@ -76,6 +76,15 @@ export const Menu: React.FC<Props> = () => {
             </HashLink>
           </NavItem>
           <NavItem>
+            <NavLink
+              href="https://m.youtube.com/channel/UCDefjtjdoSkLQxHkc1FBw_Q"
+              target="_blank"
+              changeBackground={isOpen}
+            >
+              4ETG
+            </NavLink>
+          </NavItem>
+          <NavItem>
             <NavLink href="https://tv.nrk.no/sok?q=Magan%20Gallery" target="_blank" changeBackground={isOpen}>
               NRK
             </NavLink>
@@ -227,9 +236,14 @@ const NavList = styled.ul`
 const NavItem = styled.li``;
 
 const NavLink = styled.a`
+  font-size: 1.5em;
   text-transform: uppercase;
   text-decoration: none;
   color: ${(p: Props) => (p.changeBackground ? primaryColor : primaryBackgroundColor)};
+
+  &:hover {
+    color: white;
+  }
 `;
 
 const BookMeContainer = styled.div`
