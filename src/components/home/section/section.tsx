@@ -34,34 +34,29 @@ export const Section = () => {
 
               <MediaBox>
                 <MediaParagraph>Du finner Magan på:</MediaParagraph>
-                <Icons>
-                  <IconLink
+                <IconsContainer>
+                  <IconLinkFourthFloor
                     href="https://m.youtube.com/channel/UCDefjtjdoSkLQxHkc1FBw_Q"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
-                    <FourthFloorLogo>4ETG</FourthFloorLogo>
-                  </IconLink>
+                    4ETG
+                  </IconLinkFourthFloor>
 
                   {/* NRK */}
                   <IconLink href="https://tv.nrk.no/sok?q=Magan%20Gallery" target="_blank" rel="noopener noreferrer">
-                    <svg viewBox="0 0 35 14" width="6.5em" height="4.4em" aria-hidden="true" focusable="false">
+                    <SvgNrk viewBox="0 0 35 14" width="6.5em" height="4.4em" aria-hidden="true" focusable="false">
                       <path d="M31.0878023 7.55918018c-.2517074-.42642875-.2661333-.68861697-.02338-1.10029556L34.399462 1h-4.6267395s-2.7797248 4.54205453-3.1597731 5.17316245c-.3764003.63027925-.3601505 1.02273292.0154208 1.67041405C27.0084185 8.49042897 29.7727225 13 29.7727225 13h4.6267395s-3.2751804-5.37353258-3.3116597-5.44081982M21.5941377 13h4.2077247V1h-4.2077247M18.9405537.77010873c-1.3163763 0-2.3817762 1.07539896-2.3817762 2.40310754 0 1.32687533 1.0653999 2.4056073 2.3817762 2.4056073 1.3185428 0 2.3884423-1.07873197 2.3884423-2.4056073 0-1.32770858-1.0698995-2.40310754-2.3884423-2.40310754M12.0635332 13h4.2052375V1h-4.2052375M0 13h4.19744416V1H0M9.50872938 2.92796177C9.29333553 1.82832914 8.33144198 1 7.17852938 1H4.47507953l2.71654925 12h4.56969912L9.50872938 2.92796177z"></path>
-                    </svg>
+                    </SvgNrk>
                   </IconLink>
 
                   {/* Instagram */}
                   <IconLink href="https://www.instagram.com/magangallery/" target="_blank" rel="noopener noreferrer">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="3em"
-                      viewBox="0 0 24 24"
-                      style={{ marginTop: '0.7em' }}
-                    >
+                    <SvgInstagram xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                       <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z" />
-                    </svg>
+                    </SvgInstagram>
                   </IconLink>
-                </Icons>
+                </IconsContainer>
               </MediaBox>
             </ParagraphContainer>
           </ContentContainer>
@@ -164,10 +159,20 @@ const MediaParagraph = styled.p`
   font-size: 1.5rem;
   font-weight: bold;
   margin-bottom: 1em;
+
+  @media (max-width: 457px) {
+    margin-bottom: 0.4em;
+  }
 `;
 
-const Icons = styled.div`
+const IconsContainer = styled.div`
   display: flex;
+
+  // ? Mobile width
+  @media (max-width: 457px) {
+    width: 100%;
+    flex-flow: column nowrap;
+  }
   /* border: 2px solid magenta; */
 `;
 
@@ -178,11 +183,43 @@ const IconLink = styled.a`
   /* border: 2px solid pink; */
 `;
 
-const FourthFloorLogo = styled.p`
+// ! ------ ICONS MEDIA BOX START
+
+const IconLinkFourthFloor = styled.a`
+  /* ! HUSK HA SAMME STYLE SOM IconLink! */
+  padding-right: 0.6em;
+  text-decoration: none;
+
   color: black;
   font-size: 2.8em;
   font-style: oblique;
   letter-spacing: 2px;
   font-weight: 800;
   padding-top: 0.15em;
+
+  @media (max-width: 457px) {
+    font-size: 4em;
+  }
 `;
+
+const SvgNrk = styled.svg`
+  width: 6.5em;
+  height: 4.4em;
+
+  @media (max-width: 457px) {
+    width: 9.5em;
+    height: 7.4em;
+  }
+`;
+
+const SvgInstagram = styled.svg`
+  margin-top: 0.7em;
+  width: 3em;
+
+  @media (max-width: 457px) {
+    margin-top: 0.3em;
+    width: 5em;
+  }
+`;
+
+// ! ------ ICONS MEDIA BOX END
